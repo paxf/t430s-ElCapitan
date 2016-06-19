@@ -12,6 +12,24 @@
 			<false/>
 			<key>Fixes</key>
 			<dict>
+				<key>AddHDMI_8000000</key>
+				<true/>
+				<key>AddPNLF_1000000</key>
+				<true/>
+				<key>DeleteUnused_400000</key>
+				<true/>
+				<key>FIX_ACST_4000000</key>
+				<true/>
+				<key>FIX_ADP1_800000</key>
+				<true/>
+				<key>FIX_RTC_20000</key>
+				<true/>
+				<key>FIX_S3D_2000000</key>
+				<true/>
+				<key>FIX_TMR_40000</key>
+				<true/>
+				<key>FIX_WAK_200000</key>
+				<true/>
 				<key>FixRegions_10000000</key>
 				<true/>
 				<key>NewWay_80000000</key>
@@ -50,15 +68,17 @@
 				<key>Signature</key>
 				<string>SSDT</string>
 				<key>TableId</key>
-				<string>Cpu0Ist</string>
+				<string>ApCst</string>
 			</dict>
 			<dict>
 				<key>Signature</key>
 				<string>SSDT</string>
 				<key>TableId</key>
-				<string>ApCst</string>
+				<string>Cpu0Ist</string>
 			</dict>
 		</array>
+		<key>HaltEnabler</key>
+		<true/>
 		<key>SSDT</key>
 		<dict>
 			<key>DropOem</key>
@@ -66,32 +86,41 @@
 			<key>Generate</key>
 			<true/>
 			<key>PluginType</key>
-			<integer>1</integer>
+			<string>1</string>
 		</dict>
 	</dict>
 	<key>Boot</key>
 	<dict>
 		<key>Arguments</key>
-		<string>dart=0 nv_disable=1 kext-dev-mode=1</string>
+		<string>slide=0 dart=0 kext-dev-mode=1 rootless=0</string>
 		<key>Debug</key>
 		<false/>
+		<key>DefaultLoader</key>
+		<string>boot.efi</string>
+		<key>DefaultVolume</key>
+		<string>LastBootedVolume</string>
 		<key>Legacy</key>
-		<string>LegacyBiosDefault</string>
-		<key>NeverHibernate</key>
-		<true/>
+		<string>PBR</string>
 		<key>Secure</key>
 		<false/>
 		<key>Timeout</key>
-		<integer>0</integer>
+		<integer>5</integer>
 		<key>XMPDetection</key>
-		<string>Yes</string>
+		<false/>
+	</dict>
+	<key>CPU</key>
+	<dict>
+		<key>UseARTFrequency</key>
+		<false/>
 	</dict>
 	<key>Devices</key>
 	<dict>
 		<key>Audio</key>
 		<dict>
 			<key>Inject</key>
-			<string>No</string>
+			<string>28</string>
+			<key>ResetHDA</key>
+			<true/>
 		</dict>
 		<key>USB</key>
 		<dict>
@@ -99,38 +128,12 @@
 			<true/>
 			<key>FixOwnership</key>
 			<true/>
-			<key>HighCurrent</key>
-			<true/>
 			<key>Inject</key>
 			<true/>
 		</dict>
 	</dict>
-	<key>DisableDrivers</key>
-	<array>
-		<string>VBoxHfs</string>
-	</array>
 	<key>GUI</key>
 	<dict>
-		<key>Custom</key>
-		<dict>
-			<key>Entries</key>
-			<array>
-				<dict>
-					<key>Disabled</key>
-					<false/>
-					<key>FullTitle</key>
-					<string>UEFI internal</string>
-					<key>Hidden</key>
-					<string>Always</string>
-					<key>Ignore</key>
-					<false/>
-					<key>NoCaches</key>
-					<false/>
-					<key>Type</key>
-					<string>Other</string>
-				</dict>
-			</array>
-		</dict>
 		<key>Mouse</key>
 		<dict>
 			<key>DoubleClick</key>
@@ -148,11 +151,11 @@
 			<true/>
 			<key>Legacy</key>
 			<true/>
+			<key>Linux</key>
+			<false/>
 			<key>Tool</key>
 			<true/>
 		</dict>
-		<key>Theme</key>
-		<string>Bluemac</string>
 	</dict>
 	<key>Graphics</key>
 	<dict>
@@ -165,6 +168,8 @@
 			<key>NVidia</key>
 			<false/>
 		</dict>
+		<key>NvidiaSingle</key>
+		<false/>
 		<key>ig-platform-id</key>
 		<string>0x01660004</string>
 	</dict>
@@ -174,6 +179,12 @@
 		<true/>
 		<key>AsusAICPUPM</key>
 		<true/>
+		<key>Debug</key>
+		<false/>
+		<key>KernelCpu</key>
+		<false/>
+		<key>KernelHaswellE</key>
+		<false/>
 		<key>KernelLapic</key>
 		<true/>
 		<key>KernelPm</key>
@@ -182,7 +193,25 @@
 		<array>
 			<dict>
 				<key>Comment</key>
+				<string>HDMI-audio HD4000 0x01660004, port 0406</string>
+				<key>Disabled</key>
+				<false/>
+				<key>Find</key>
+				<data>
+				BAYAAAAEAACBAAAA
+				</data>
+				<key>Name</key>
+				<string>disabled:AppleIntelFramebufferCapri</string>
+				<key>Replace</key>
+				<data>
+				BAYAAAAIAAAGAAAA
+				</data>
+			</dict>
+			<dict>
+				<key>Comment</key>
 				<string>Enable TRIM for SSD</string>
+				<key>Disabled</key>
+				<false/>
 				<key>Find</key>
 				<data>
 				AEFQUExFIFNTRAA=
@@ -196,49 +225,9 @@
 			</dict>
 			<dict>
 				<key>Comment</key>
-				<string>HDMI-audio HD4000 0x01660004, port 0304</string>
-				<key>Find</key>
-				<data>
-				AwQAAAAEAACBAAAA
-				</data>
-				<key>Name</key>
-				<string>disabled:AppleIntelFramebufferCapri</string>
-				<key>Replace</key>
-				<data>
-				AwQAAAAIAAAGAAAA
-				</data>
-			</dict>
-			<dict>
-				<key>Comment</key>
-				<string>HDMI-video, 64MB BIOS, HD4000 0x01660004 #1 of 2</string>
-				<key>Find</key>
-				<data>
-				BABmAQEDAQEAAAAC
-				</data>
-				<key>Name</key>
-				<string>AppleIntelFramebufferCapri</string>
-				<key>Replace</key>
-				<data>
-				BABmAQECBAIAAAAE
-				</data>
-			</dict>
-			<dict>
-				<key>Comment</key>
-				<string>HDMI-audio HD4000 0x01660004, port 0205</string>
-				<key>Find</key>
-				<data>
-				AgUAAAAEAAAHBAAA
-				</data>
-				<key>Name</key>
-				<string>disabled:AppleIntelFramebufferCapri</string>
-				<key>Replace</key>
-				<data>
-				AgUAAAAIAAAGAAAA
-				</data>
-			</dict>
-			<dict>
-				<key>Comment</key>
 				<string>HDMI-video, 64MB BIOS, HD4000 0x01660004 #2 of 2</string>
+				<key>Disabled</key>
+				<false/>
 				<key>Find</key>
 				<data>
 				MAIAAAAAAAABAAAAQAAAAAAAAAABAAAAQAAAAAAAAAAB
@@ -254,21 +243,41 @@
 			</dict>
 			<dict>
 				<key>Comment</key>
-				<string>HDMI-audio HD4000 0x01660004, port 0406</string>
+				<string>HDMI-audio HD4000 0x01660004, port 0205</string>
+				<key>Disabled</key>
+				<false/>
 				<key>Find</key>
 				<data>
-				BAYAAAAEAACBAAAA
+				AgUAAAAEAAAHBAAA
 				</data>
 				<key>Name</key>
 				<string>disabled:AppleIntelFramebufferCapri</string>
 				<key>Replace</key>
 				<data>
-				BAYAAAAIAAAGAAAA
+				AgUAAAAIAAAGAAAA
+				</data>
+			</dict>
+			<dict>
+				<key>Comment</key>
+				<string>HDMI-audio HD4000 0x01660004, port 0304</string>
+				<key>Disabled</key>
+				<false/>
+				<key>Find</key>
+				<data>
+				AwQAAAAEAACBAAAA
+				</data>
+				<key>Name</key>
+				<string>disabled:AppleIntelFramebufferCapri</string>
+				<key>Replace</key>
+				<data>
+				AwQAAAAIAAAGAAAA
 				</data>
 			</dict>
 			<dict>
 				<key>Comment</key>
 				<string>Boot graphics glitch, 10.10.2</string>
+				<key>Disabled</key>
+				<false/>
 				<key>Find</key>
 				<data>
 				QYjE6xE=
@@ -280,12 +289,76 @@
 				QYjE6zE=
 				</data>
 			</dict>
+			<dict>
+				<key>Comment</key>
+				<string>HDMI-video, 64MB BIOS, HD4000 0x01660004 #1 of 2</string>
+				<key>Disabled</key>
+				<false/>
+				<key>Find</key>
+				<data>
+				BABmAQEDAQEAAAAC
+				</data>
+				<key>Name</key>
+				<string>AppleIntelFramebufferCapri</string>
+				<key>Replace</key>
+				<data>
+				BABmAQECBAIAAAAE
+				</data>
+			</dict>
 		</array>
+	</dict>
+	<key>RtVariables</key>
+	<dict>
+		<key>BooterConfig</key>
+		<string>0x28</string>
+		<key>CsrActiveConfig</key>
+		<string>0x67</string>
+		<key>MLB</key>
+		<string>C02032109R5DC771H</string>
+		<key>ROM</key>
+		<string>UseMacAddr0</string>
+	</dict>
+	<key>SMBIOS</key>
+	<dict>
+		<key>BiosReleaseDate</key>
+		<string>21/03/12</string>
+		<key>BiosVendor</key>
+		<string>Apple Inc.</string>
+		<key>BiosVersion</key>
+		<string>MBP91.88Z.00D3.B00.1203211536</string>
+		<key>Board-ID</key>
+		<string>Mac-6F01561E16C75D06</string>
+		<key>BoardManufacturer</key>
+		<string>Apple Inc.</string>
+		<key>BoardType</key>
+		<integer>10</integer>
+		<key>ChassisAssetTag</key>
+		<string>MacBook-Aluminum</string>
+		<key>ChassisManufacturer</key>
+		<string>Apple Inc.</string>
+		<key>ChassisType</key>
+		<string>08</string>
+		<key>Family</key>
+		<string>MacBook Pro</string>
+		<key>Manufacturer</key>
+		<string>Apple Inc.</string>
+		<key>Mobile</key>
+		<true/>
+		<key>ProductName</key>
+		<string>MacBookPro9,2</string>
+		<key>SerialNumber</key>
+		<string>C02KX348DTY3</string>
+		<key>Trust</key>
+		<false/>
+		<key>Version</key>
+		<string>1.0</string>
 	</dict>
 	<key>SystemParameters</key>
 	<dict>
 		<key>InjectKexts</key>
 		<string>Detect</string>
+		<key>InjectSystemID</key>
+		<true/>
 	</dict>
 </dict>
 </plist>
